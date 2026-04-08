@@ -11,12 +11,16 @@ return new class extends Migration
      */
     public function up(): void
 {
-    Schema::create('buku', function (Blueprint $table) {
+    Schema::create('profiles', function (Blueprint $table) {
         $table->id();
-        $table->string('judul');
-        $table->string('penulis');
-        $table->integer('stok')->default(0);
-        $table->text('deskripsi')->nullable();
+
+        // relasi ke user
+        $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+
+        $table->string('foto')->nullable(); // simpan path foto
+        $table->string('no_hp')->nullable();
+        $table->text('alamat')->nullable();
+        $table->date('tanggal_lahir')->nullable();
         $table->softDeletes();
         $table->timestamps();
     });
@@ -27,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bukus');
+        Schema::dropIfExists('profiles');
     }
 };

@@ -25,7 +25,7 @@ return new class extends Migration
             'ditolak',
             'dikembalikan'
         ])->default('pending');
-
+        $table->softDeletes();
         $table->timestamps();
     });
 }

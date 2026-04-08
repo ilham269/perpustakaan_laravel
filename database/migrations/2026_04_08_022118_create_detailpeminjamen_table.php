@@ -18,7 +18,6 @@ return new class extends Migration
         $table->foreignId('buku_id')->constrained('buku')->cascadeOnDelete();
 
         $table->integer('jumlah')->default(1);
-
         $table->timestamps();
     });
 }
