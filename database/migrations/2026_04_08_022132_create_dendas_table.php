@@ -14,7 +14,7 @@ return new class extends Migration
     Schema::create('denda', function (Blueprint $table) {
         $table->id();
 
-        $table->foreignId('buku_id')->constrained('buku')->cascadeOnDelete();
+        $table->foreignId('peminjaman_id')->constrained('peminjaman')->cascadeOnDelete();
 
         $table->integer('terlambat_hari')->default(0);
         $table->integer('total_denda')->default(0);

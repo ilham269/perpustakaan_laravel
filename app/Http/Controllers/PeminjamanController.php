@@ -2,65 +2,116 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Buku;
+use App\Models\Denda;
 use App\Models\Peminjaman;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PeminjamanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        $peminjaman = Peminjaman::all();
+        $peminjaman = Peminjaman::with(['user', 'buku'])
+                                ->latest()
+                                ->paginate(10);
         return view('peminjaman.index', compact('peminjaman'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $users = User::orderBy('name')->get();
+        $bukus = Buku::where('stok', '>', 0)->orderBy('judul')->get();
+        return view('peminjaman.create', compact('users', 'bukus'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'user_id'          => 'required|exists:users,id',
+            'buku_id'          => 'required|exists:buku,id',
+            'tanggal_request'  => 'required|date',
+            'tanggal_pinjam'   => 'nullable|date|after_or_equal:tanggal_request',
+            'tanggal_kembali'  => 'nullable|date|after_or_equal:tanggal_pinjam',
+            'status'           => 'required|in:pending,disetujui,ditolak,dikembalikan',
+        ]);
+
+        $peminjaman = Peminjaman::create($data);
+
+        // Kurangi stok jika disetujui
+        if ($data['status'] === 'disetujui') {
+            $buku = Buku::find($data['buku_id']);
+            if ($buku && $buku->stok > 0) {
+                $buku->decrement('stok');
+            }
+        }
+
+        return redirect()->route('peminjaman.index')
+                         ->with('success', 'Data peminjaman berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Peminjaman $peminjaman)
     {
-        //
+        $peminjaman->load(['user', 'buku', 'denda']);
+        return view('peminjaman.show', compact('peminjaman'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(Peminjaman $peminjaman)
     {
-        //
+        $users = User::orderBy('name')->get();
+        $bukus = Buku::orderBy('judul')->get();
+        return view('peminjaman.edit', compact('peminjaman', 'users', 'bukus'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Peminjaman $peminjaman)
     {
-        //
+        $data = $request->validate([
+            'user_id'          => 'required|exists:users,id',
+            'buku_id'          => 'required|exists:buku,id',
+            'tanggal_request'  => 'required|date',
+            'tanggal_pinjam'   => 'nullable|date',
+            'tanggal_kembali'  => 'nullable|date',
+            'status'           => 'required|in:pending,disetujui,ditolak,dikembalikan',
+        ]);
+
+        $statusLama = $peminjaman->status;
+        $peminjaman->update($data);
+
+        // Kembalikan stok jika status berubah ke dikembalikan
+        if ($data['status'] === 'dikembalikan' && $statusLama !== 'dikembalikan') {
+            $peminjaman->buku->increment('stok');
+
+            // Buat denda otomatis jika terlambat
+            $hari = $peminjaman->hariTerlambat();
+            if ($hari > 0 && !$peminjaman->denda) {
+                Denda::create([
+                    'peminjaman_id' => $peminjaman->id,
+                    'terlambat_hari' => $hari,
+                    'total_denda'    => Denda::hitung($hari),
+                    'status'         => 'belum bayar',
+                ]);
+            }
+        }
+
+        // Kurangi stok jika baru disetujui
+        if ($data['status'] === 'disetujui' && $statusLama === 'pending') {
+            $peminjaman->buku->decrement('stok');
+        }
+
+        return redirect()->route('peminjaman.index')
+                         ->with('success', 'Data peminjaman berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Peminjaman $peminjaman)
     {
-        //
+        $peminjaman->delete();
+
+        return redirect()->route('peminjaman.index')
+                         ->with('success', 'Data peminjaman berhasil dihapus.');
     }
 }

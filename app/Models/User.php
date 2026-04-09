@@ -50,4 +50,8 @@ class User extends Authenticatable
     {
     return $this->hasOne(Profile::class);
     }
+    public function peminjaman()
+    {
+    return $this->hasMany(Peminjaman::class);
+    }
 }

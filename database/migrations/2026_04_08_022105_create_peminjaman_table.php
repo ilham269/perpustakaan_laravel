@@ -13,7 +13,16 @@ return new class extends Migration
 {
     Schema::create('peminjaman', function (Blueprint $table) {
         $table->id();
-        $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+
+        // relasi ke users
+        $table->foreignId('user_id')
+              ->constrained()
+              ->cascadeOnDelete();
+
+        // relasi ke buku
+        $table->foreignId('buku_id')
+              ->constrained('buku')
+              ->cascadeOnDelete();
 
         $table->date('tanggal_request');
         $table->date('tanggal_pinjam')->nullable();
@@ -25,6 +34,7 @@ return new class extends Migration
             'ditolak',
             'dikembalikan'
         ])->default('pending');
+
         $table->softDeletes();
         $table->timestamps();
     });
@@ -35,6 +45,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('peminjamen');
+        Schema::dropIfExists('peminjaman');
     }
 };

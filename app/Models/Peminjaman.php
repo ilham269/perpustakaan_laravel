@@ -8,4 +8,51 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Peminjaman extends Model
 {
     use SoftDeletes;
+
+    protected $table = 'peminjaman';
+
+    protected $fillable = [
+        'user_id',
+        'buku_id',
+        'tanggal_request',
+        'tanggal_pinjam',
+        'tanggal_kembali',
+        'status',
+    ];
+
+    protected $casts = [
+        'tanggal_request' => 'date',
+        'tanggal_pinjam'  => 'date',
+        'tanggal_kembali' => 'date',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function buku()
+    {
+        return $this->belongsTo(Buku::class, 'buku_id');
+    }
+
+    public function detailPeminjaman()
+    {
+        return $this->hasMany(Detailpeminjaman::class, 'peminjaman_id');
+    }
+
+    public function denda()
+    {
+        return $this->hasOne(Denda::class, 'peminjaman_id');
+    }
+
+    /** Hitung keterlambatan dalam hari */
+    public function hariTerlambat(): int
+    {
+        if ($this->status !== 'dikembalikan' || !$this->tanggal_kembali || !$this->tanggal_pinjam) {
+            return 0;
+        }
+        $batas = $this->tanggal_pinjam->addDays(7);
+        return max(0, $batas->diffInDays($this->tanggal_kembali, false) * -1);
+    }
 }
