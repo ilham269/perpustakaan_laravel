@@ -14,7 +14,7 @@
             </div>
 
             <div class="form-card">
-                <form action="{{ route('buku.store') }}" method="POST">
+                <form action="{{ route('buku.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @include('buku._form')
                     <button type="submit" class="btn custom-btn w-100 mt-2">Simpan</button>

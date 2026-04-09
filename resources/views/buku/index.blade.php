@@ -25,7 +25,8 @@
             <table class="table table-hover mb-0">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>Id</th>
+                        <th>Gambar</th>
                         <th>Judul</th>
                         <th>Penulis</th>
                         <th>Stok</th>
@@ -36,6 +37,13 @@
                     @forelse ($bukus as $buku)
                     <tr>
                         <td>{{ $loop->iteration + ($bukus->currentPage() - 1) * $bukus->perPage() }}</td>
+                        <td><div class="form-group-custom">
+    <label for="gambar">Cover Buku</label>
+
+    <img id="preview" 
+         src="{{ !empty($buku->gambar) ? asset('storage/' . $buku->gambar) : '' }}" 
+         style="display:block; width:100px; height:140px; object-fit:cover; border-radius:8px; margin-bottom:10px;">
+</div></td>
                         <td>{{ $buku->judul }}</td>
                         <td>{{ $buku->penulis }}</td>
                         <td>

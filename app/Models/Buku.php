@@ -16,6 +16,7 @@ class Buku extends Model
         'penulis',
         'stok',
         'deskripsi',
+        'gambar'
     ];
 
     public function peminjaman()

@@ -14,7 +14,7 @@
             </div>
 
             <div class="form-card">
-                <form action="{{ route('buku.update', $buku) }}" method="POST">
+                <form action="{{ route('buku.update', $buku) }}" method="POST" enctype="multipart/form-data">
                     @csrf @method('PUT')
                     @include('buku._form')
                     <button type="submit" class="btn custom-btn w-100 mt-2">Perbarui</button>

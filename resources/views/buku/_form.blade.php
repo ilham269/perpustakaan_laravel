@@ -32,3 +32,22 @@
               placeholder="Deskripsi singkat buku...">{{ old('deskripsi', $buku->deskripsi ?? '') }}</textarea>
     @error('deskripsi') <span class="form-error">{{ $message }}</span> @enderror
 </div>
+<div class="form-group-custom">
+    <label for="gambar">Cover Buku <span class="text-muted">(opsional)</span></label>
+
+    {{-- PREVIEW GAMBAR --}}
+    @if(!empty($buku->gambar))
+        <div class="mb-2">
+            <img src="{{ asset('storage/' . $buku->gambar) }}" 
+                 style="width:100px; height:140px; object-fit:cover; border-radius:8px;">
+        </div>
+    @endif
+
+    <input type="file" id="gambar" name="gambar"
+           class="form-input {{ $errors->has('gambar') ? 'is-invalid' : '' }}"
+           accept="image/*">
+
+    @error('gambar') 
+        <span class="form-error">{{ $message }}</span> 
+    @enderror
+</div>
