@@ -40,33 +40,23 @@
 </head>
 
 <body>
-
-{{-- ================= NAVBAR ================= --}}
-@if (!trim($__env->yieldContent('hide-chrome')))
+ {{-- NAVBAR --}}
     @include('components.navbar')
-@endif
 
-
-{{-- ================= CONTENT ================= --}}
-<main>
-    <div class="container">
-        @yield('content')
+    {{-- FLASH MESSAGE --}}
+    <div class="container mt-3">
+        @include('components.flash-messages')
     </div>
-</main>
 
+    {{-- MAIN CONTENT --}}
+    <main>
+        @yield('content')
+    </main>
 
-{{-- ================= FOOTER ================= --}}
-@unless (View::hasSection('hide-chrome'))
-<footer class="text-center py-4 mt-5 text-muted">
-    © {{ date('Y') }} Perpustakaan
-</footer>
-@endunless
+    {{-- FOOTER --}}
+    @include('components.footer')
 
-
-{{-- JS --}}
-<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-
-@stack('scripts')
+    @stack('scripts')
 
 </body>
 </html>

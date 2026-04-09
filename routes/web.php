@@ -8,6 +8,20 @@ use App\Http\Controllers\DendaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CatalogController;
 
+
+
+//catalog crud
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('catalog', catalogController::class);
+});
+
+
+//admin dashboard
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('admin', adminController::class);
+});
+
+
 // Landing page
 Route::get('/', function () {
     return view('welcome');

@@ -29,6 +29,7 @@ class HomeController extends Controller
                                         ->take(5)
                                         ->get();
     $buku = Buku::latest()->take(8)->get(); 
+    
     // latest() = order by created_at DESC
 
 
