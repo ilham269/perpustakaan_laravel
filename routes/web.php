@@ -19,7 +19,9 @@ Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Buku
-Route::resource('buku', BukuController::class);
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('buku', BukuController::class);
+});
 
 // Peminjaman
 Route::resource('peminjaman', PeminjamanController::class);

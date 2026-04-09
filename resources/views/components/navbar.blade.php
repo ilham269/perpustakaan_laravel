@@ -28,7 +28,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('buku*') ? 'active' : '' }}" href="{{ route('buku.index') }}">
+                    <a class="nav-link {{ request()->is('buku*') ? 'active' : '' }}" href="{{ route('admin.buku.index') }}">
                         Buku
                     </a>
                 </li>

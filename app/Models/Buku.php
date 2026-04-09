@@ -9,15 +9,21 @@ class Buku extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'buku';
+    protected $table = 'bukus';
 
     protected $fillable = [
+        'catalog_id',
         'judul',
         'penulis',
         'stok',
         'deskripsi',
-        'gambar'
+        'gambar',
     ];
+
+    public function catalog()
+    {
+        return $this->belongsTo(Catalog::class);
+    }
 
     public function peminjaman()
     {

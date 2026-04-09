@@ -11,33 +11,17 @@ return new class extends Migration
      */
     public function up(): void
 {
-    Schema::create('peminjaman', function (Blueprint $table) {
-        $table->id();
-
-        // relasi ke users
-        $table->foreignId('user_id')
-              ->constrained()
-              ->cascadeOnDelete();
-
-        // relasi ke buku
-        $table->foreignId('buku_id')
-              ->constrained('buku')
-              ->cascadeOnDelete();
-
-        $table->date('tanggal_request');
-        $table->date('tanggal_pinjam')->nullable();
-        $table->date('tanggal_kembali')->nullable();
-
-        $table->enum('status', [
-            'pending',
-            'disetujui',
-            'ditolak',
-            'dikembalikan'
-        ])->default('pending');
-
-        $table->softDeletes();
-        $table->timestamps();
-    });
+        Schema::create('peminjaman', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('buku_id');
+            $table->date('tanggal_request');
+            $table->date('tanggal_pinjam')->nullable();
+            $table->date('tanggal_kembali')->nullable();
+            $table->enum('status', ['pending','disetujui','ditolak','dikembalikan'])->default('pending');
+            $table->softDeletes();
+            $table->timestamps();
+        });
 }
 
     /**

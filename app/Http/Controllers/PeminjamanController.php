@@ -34,16 +34,15 @@ class PeminjamanController extends Controller
     {
         $data = $request->validate([
             'user_id'          => 'required|exists:users,id',
-            'buku_id'          => 'required|exists:buku,id',
+            'buku_id'          => 'required|exists:bukus,id',
             'tanggal_request'  => 'required|date',
             'tanggal_pinjam'   => 'nullable|date|after_or_equal:tanggal_request',
             'tanggal_kembali'  => 'nullable|date|after_or_equal:tanggal_pinjam',
             'status'           => 'required|in:pending,disetujui,ditolak,dikembalikan',
         ]);
 
-        $peminjaman = Peminjaman::create($data);
+        Peminjaman::create($data);
 
-        // Kurangi stok jika disetujui
         if ($data['status'] === 'disetujui') {
             $buku = Buku::find($data['buku_id']);
             if ($buku && $buku->stok > 0) {
@@ -72,7 +71,7 @@ class PeminjamanController extends Controller
     {
         $data = $request->validate([
             'user_id'          => 'required|exists:users,id',
-            'buku_id'          => 'required|exists:buku,id',
+            'buku_id'          => 'required|exists:bukus,id',
             'tanggal_request'  => 'required|date',
             'tanggal_pinjam'   => 'nullable|date',
             'tanggal_kembali'  => 'nullable|date',
@@ -82,15 +81,13 @@ class PeminjamanController extends Controller
         $statusLama = $peminjaman->status;
         $peminjaman->update($data);
 
-        // Kembalikan stok jika status berubah ke dikembalikan
         if ($data['status'] === 'dikembalikan' && $statusLama !== 'dikembalikan') {
             $peminjaman->buku->increment('stok');
 
-            // Buat denda otomatis jika terlambat
             $hari = $peminjaman->hariTerlambat();
             if ($hari > 0 && !$peminjaman->denda) {
                 Denda::create([
-                    'peminjaman_id' => $peminjaman->id,
+                    'peminjaman_id'  => $peminjaman->id,
                     'terlambat_hari' => $hari,
                     'total_denda'    => Denda::hitung($hari),
                     'status'         => 'belum bayar',
@@ -98,7 +95,6 @@ class PeminjamanController extends Controller
             }
         }
 
-        // Kurangi stok jika baru disetujui
         if ($data['status'] === 'disetujui' && $statusLama === 'pending') {
             $peminjaman->buku->decrement('stok');
         }

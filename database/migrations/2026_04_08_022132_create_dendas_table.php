@@ -11,18 +11,15 @@ return new class extends Migration
      */
     public function up(): void
 {
-    Schema::create('denda', function (Blueprint $table) {
-        $table->id();
-
-        $table->foreignId('peminjaman_id')->constrained('peminjaman')->cascadeOnDelete();
-
-        $table->integer('terlambat_hari')->default(0);
-        $table->integer('total_denda')->default(0);
-
-        $table->enum('status', ['belum bayar', 'sudah bayar'])->default('belum bayar');
-        $table->softDeletes();
-        $table->timestamps();
-    });
+        Schema::create('denda', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('peminjaman_id');
+            $table->integer('terlambat_hari')->default(0);
+            $table->integer('total_denda')->default(0);
+            $table->enum('status', ['belum bayar', 'sudah bayar'])->default('belum bayar');
+            $table->softDeletes();
+            $table->timestamps();
+        });
 }
 
     /**

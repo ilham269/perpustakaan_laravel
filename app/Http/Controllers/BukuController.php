@@ -10,20 +10,20 @@ class BukuController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+       $this->middleware(['auth', 'admin']);
     }
 
-    // 📚 LIST DATA
+    
     public function index()
     {
         $bukus = Buku::latest()->paginate(10);
-        return view('buku.index', compact('bukus'));
+        return view('admin.buku.index', compact('bukus'));
     }
 
     // ➕ FORM CREATE
     public function create()
     {
-        return view('buku.create');
+        return view('admin.buku.create');
     }
 
     // 💾 STORE DATA + UPLOAD GAMBAR
@@ -49,7 +49,7 @@ class BukuController extends Controller
 
         Buku::create($data);
 
-        return redirect()->route('buku.index')
+        return redirect()->route('admin.buku.index')
                          ->with('success', 'Buku berhasil ditambahkan.');
     }
 
@@ -57,13 +57,13 @@ class BukuController extends Controller
     public function show(Buku $buku)
     {
         $buku->load('peminjaman.user');
-        return view('buku.show', compact('buku'));
+        return view('admin.buku.show', compact('buku'));
     }
 
     // ✏️ FORM EDIT
     public function edit(Buku $buku)
     {
-        return view('buku.edit', compact('buku'));
+        return view('admin.buku.edit', compact('buku'));
     }
 
     // 🔄 UPDATE + GANTI GAMBAR
@@ -93,7 +93,7 @@ class BukuController extends Controller
 
         $buku->update($data);
 
-        return redirect()->route('buku.index')
+        return redirect()->route('admin.buku.index')
                          ->with('success', 'Buku berhasil diperbarui.');
     }
 
@@ -106,7 +106,7 @@ class BukuController extends Controller
 
         $buku->delete();
 
-        return redirect()->route('buku.index')
+        return redirect()->route('admin.buku.index')
                          ->with('success', 'Buku berhasil dihapus.');
     }
 }
