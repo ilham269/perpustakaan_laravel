@@ -8,11 +8,11 @@ use Illuminate\Http\Request;
 class AdminMiddleware
 {
     public function handle(Request $request, Closure $next)
-    {
-        if (auth()->check() && auth()->user()->role === 'admin') {
-            return $next($request);
-        }
-
+{
+    if (!auth()->check() || strtolower(auth()->user()->role) !== 'admin') {
         abort(403, 'AKSES DITOLAK!');
     }
+
+    return $next($request);
+}
 }
