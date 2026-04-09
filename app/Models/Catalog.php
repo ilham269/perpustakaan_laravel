@@ -10,6 +10,8 @@ class Catalog extends Model
 
     protected $fillable = [
         'nama',
+        'genre',
+        'deskripsi',
     ];
 
     public function bukus()

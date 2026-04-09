@@ -35,8 +35,7 @@ class DetailBukuController extends Controller
      */
     public function show(string $id)
     {
-        $bukus = Buku::findOrFail($id);
-        return view('')
+        
     }
 
     /**

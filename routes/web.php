@@ -6,6 +6,7 @@ use App\Http\Controllers\BukuController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\DendaController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CatalogController;
 
 // Landing page
 Route::get('/', function () {
@@ -25,6 +26,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
 // Peminjaman
 Route::resource('peminjaman', PeminjamanController::class);
+
+//Catalog
+Route::resource('catalog', CatalogController::class);
 
 // Denda
 Route::resource('denda', DendaController::class)->only(['index', 'show', 'destroy']);
