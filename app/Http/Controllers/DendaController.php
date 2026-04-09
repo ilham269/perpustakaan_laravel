@@ -17,7 +17,7 @@ class DendaController extends Controller
         $dendas = Denda::with(['peminjaman.user', 'peminjaman.buku'])
                        ->latest()
                        ->paginate(10);
-        return view('denda.index', compact('dendas'));
+        return view('admin.denda.index', compact('dendas'));
     }
 
     public function show(Denda $denda)

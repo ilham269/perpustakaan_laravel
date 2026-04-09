@@ -8,6 +8,7 @@ use App\Http\Controllers\DendaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DaftarBukuController;
 
 
 
@@ -35,6 +36,9 @@ Route::get('/', function () {
 
 // Auth routes
 Auth::routes();
+
+//daftarbuku
+Route::get('/daftarbuku', [DaftarBukuController::class, 'index'])->name('daftarbuku');
 
 // Dashboard
 Route::get('/home', [HomeController::class, 'index'])->name('home');
