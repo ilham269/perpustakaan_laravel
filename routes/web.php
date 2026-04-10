@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DaftarBukuController;
+use App\Http\Controllers\DetailBukuController;
 
 
 
@@ -16,6 +17,10 @@ use App\Http\Controllers\DaftarBukuController;
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('catalog', catalogController::class);
 });
+
+
+//daftarbuku
+Route::get('detailbuku', [DetailBuku::class, 'show'])->name('buku.show');
 
 
 //admin dashboard
