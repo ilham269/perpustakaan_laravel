@@ -20,6 +20,9 @@ return new class extends Migration
             $table->timestamps();
         });
 
+
+
+        
         // Foreign key ditambah setelah catalogs table ada
         Schema::table('bukus', function (Blueprint $table) {
             $table->foreign('catalog_id')

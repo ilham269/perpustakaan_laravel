@@ -29,10 +29,11 @@ class HomeController extends Controller
                                         ->take(5)
                                         ->get();
     $buku = Buku::latest()->take(8)->get(); 
+    $databuku = Buku::all(); 
     
     // latest() = order by created_at DESC
 
 
-        return view('home', compact('stats', 'peminjaman_terbaru', 'buku'));
+        return view('home', compact('stats', 'peminjaman_terbaru', 'buku','databuku'));
     }
 }

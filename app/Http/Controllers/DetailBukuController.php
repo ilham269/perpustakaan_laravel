@@ -36,11 +36,11 @@ class DetailBukuController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        $catalog = Catalog::findOrFail($id);
-        $buku = Buku::all();
-        return view('detailbuku.show', compact('catalog', 'buku'));
+        $buku = Buku::findOrFail($id);
+
+        return view('detailbuku.show', compact('buku'));
     }
 
     /**

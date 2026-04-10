@@ -20,7 +20,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
 
 //daftarbuku
-Route::get('detailbuku', [DetailBuku::class, 'show'])->name('buku.show');
+Route::get('/detailbuku/{buku}', [DetailBukuController::class, 'show'])->name('detailbuku.show');
 
 
 //admin dashboard
