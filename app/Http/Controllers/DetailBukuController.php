@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Buku;
+use App\Models\Catalog;
+
 
 class DetailBukuController extends Controller
 {
@@ -35,7 +38,9 @@ class DetailBukuController extends Controller
      */
     public function show(string $id)
     {
-        
+        $catalog = Catalog::findOrFail($id);
+        $buku = Buku::all();
+        return view('detailbuku.show', compact('catalog', 'buku'));
     }
 
     /**
