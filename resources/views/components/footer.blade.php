@@ -4,9 +4,9 @@
 
             <!-- Tentang -->
             <div class="col-md-4 mb-4">
-                <h5 class="fw-bold">PerpusKu</h5>
+                <h5 class="fw-bold">Perpustakaan Nasional</h5>
                 <p class="small">
-                    Platform perpustakaan digital yang memudahkan kamu mencari dan meminjam buku kapan saja.
+                    Platform perpustakaan Nasional dan digital yang memudahkan kamu mencari dan meminjam buku kapan saja.
                 </p>
             </div>
 
@@ -26,10 +26,10 @@
 
         </div>
 
-        <hr style="border-color:rgba(255,255,255,0.2);">
+        <hr style="border-color:D4C490;">
 
         <div class="text-center small">
-            © 2026 PerpusKu. All Rights Reserved.
+            © 2026 Perpustakaan Nasional. All Rights Reserved.
         </div>
     </div>
 </footer>

@@ -13,7 +13,7 @@
   .navbar-brand {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
     text-decoration: none;
   }
   .navbar-brand-image {
@@ -24,7 +24,7 @@
   }
   .navbar-brand-text {
     font-family: 'Playfair Display', serif;
-    font-size: 17px;
+    font-size: 25px;
     font-weight: 600;
     color: #3A2E1A;
     line-height: 1.2;
@@ -98,9 +98,7 @@
 
     {{-- LOGO --}}
     <a class="navbar-brand" href="{{ route('home') }}">
-      <img src="{{ asset('images/logo2.png') }}"
-           class="navbar-brand-image img-fluid"
-           alt="Logo Perpustakaan">
+      
       <span class="navbar-brand-text">
         Perpustakaan
         <small>Nasional</small>

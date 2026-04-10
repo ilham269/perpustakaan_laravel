@@ -1,5 +1,9 @@
 {{-- resources/views/buku/show.blade.php --}}
+@extends('layouts.app')
 
+@section('title', 'detail buku')
+
+@section('content')
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 
 <style>
@@ -171,9 +175,10 @@
 
       {{-- Tombol Pinjam --}}
       <a class="btn-pinjam" href="{{ route('peminjaman.create', $buku->id) }}">
-        📚 Pinjam Buku
+         Pinjam Buku
       </a>
     </div>
 
   </div>
 </div>
+@endsection
