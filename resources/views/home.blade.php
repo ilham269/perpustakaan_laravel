@@ -171,7 +171,7 @@
 <section class="hero-section">
   <div class="container d-flex align-items-center justify-content-between flex-wrap gap-4">
 
-    <div style="max-width: 480px;">
+    <div style="max-width: 400px;">
       <h1 class="hero-title">Temukan Dunia dari Buku</h1>
       <p class="hero-subtitle">
         Jelajahi berbagai koleksi buku dari berbagai macam genre dengan mudah dan cepat.
