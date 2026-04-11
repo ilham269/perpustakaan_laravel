@@ -1,5 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 @section('title', 'Detail Denda')
+@section('page-title', 'Detail Denda')
 
 @section('content')
 <div class="container py-5">
@@ -7,7 +8,7 @@
         <div class="col-lg-6 col-12">
 
             <div class="mb-4">
-                <a href="{{ route('denda.index') }}" class="back-link">
+                <a href="{{ route('admin.denda.index') }}" class="back-link">
                     <i class="bi-arrow-left me-1"></i> Kembali
                 </a>
             </div>
@@ -44,7 +45,7 @@
                 </div>
                 @if ($denda->status === 'belum bayar')
                 <div class="detail-card-footer">
-                    <form action="{{ route('denda.bayar', $denda) }}" method="POST">
+                    <form action="{{ route('admin.denda.bayar', $denda) }}" method="POST">
                         @csrf @method('PATCH')
                         <button type="submit" class="btn custom-btn btn-sm">
                             <i class="bi-cash me-1"></i> Tandai Lunas

@@ -2,115 +2,60 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Buku;
 use App\Models\Catalog;
+use Illuminate\Http\Request;
 
 class CatalogController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $databuku = Buku::all();
-        return view('admin.catalog.index', compact('databuku'));
-        
+        $catalogs = Catalog::withCount('bukus')->latest()->paginate(10);
+
+        return view('admin.catalog.index', compact('catalogs'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('admin.catalog.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $request->validate(
-            [
-                'nama' => 'required|max:100',
-                'genre' => 'required|',
-                'deskripsi' => 'required|max:100',
-            ],
-            [
-                'nama.required' => 'Nama tidak boleh kosong',
-                'genre.required' => 'Genre tidak boleh kosong',
-                'deskripsi.required' => 'Deskripsi tidak boleh kosong',
-            ],
-        );
+        $request->validate(['nama' => 'required|max:100|unique:catalogs,nama']);
 
-        $databuku = new Catalog;
-        $databuku->nama = $request->nama;
-        $databuku->genre = $request->genre;
-        $databuku->deskripsi = $request->deskripsi;
-        $databuku->save();
+        Catalog::create(['nama' => $request->nama]);
 
-        session()->flash('success', 'Data berhasil di tambahkan !');
-
-        return redirect()->route('admin.catalog.index');
+        return redirect()->route('admin.catalog.index')
+            ->with('success', 'Katalog berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Catalog $catalog)
     {
-        $databuku = Catalog::findOrFail($id);
-        $buku = Buku::all();
-        return view('admin.catalog.show', compact('databuku', 'buku'));
+        $catalog->load('bukus');
+
+        return view('admin.catalog.show', compact('catalog'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(Catalog $catalog)
     {
-        $databuku = Catalog::findOrFail($id);
-        $buku = Buku::all();
-        return view('admin.catalog.edit', compact('uangkeluar', 'buku'));
+        return view('admin.catalog.edit', compact('catalog'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Catalog $catalog)
     {
-        $request->validate(
-            [
-                'nama' => 'required|max:100',
-                'genre' => 'required|',
-                'deskripsi' => 'required|max:100',
-            ],
-            [
-                'nama.required' => 'Nama tidak boleh kosong',
-                'genre.required' => 'Genre tidak boleh kosong',
-                'deskripsi.required' => 'Deskripsi tidak boleh kosong',
-            ],
-        );
+        $request->validate(['nama' => 'required|max:100|unique:catalogs,nama,' . $catalog->id]);
 
-        $databuku = Catalog::findOrFail($id);
-        $databuku->nama = $request->nama;
-        $databuku->genre = $request->genre;
-        $databuku->deskripsi = $request->deskripsi;
-        $databuku->save();
+        $catalog->update(['nama' => $request->nama]);
 
-        session()->flash('success', 'Data berhasil di edit !');
-
-        return redirect()->route('admin.catalog.index');
+        return redirect()->route('admin.catalog.index')
+            ->with('success', 'Katalog berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Catalog $catalog)
     {
-        $databuku = Catalog::findOrFail($id);
-        $databuku->delete();
-        return redirect()->route('admin.catalog.index')->with('success', 'Data Berhasil Di Hapus !');
+        $catalog->delete();
+
+        return redirect()->route('admin.catalog.index')
+            ->with('success', 'Katalog berhasil dihapus.');
     }
 }

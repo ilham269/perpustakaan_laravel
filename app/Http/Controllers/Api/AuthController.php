@@ -13,13 +13,13 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email'    => 'required|email',
+            'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
         $user = User::where('email', $request->email)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (! $user || ! Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['Email atau password salah.'],
             ]);
@@ -29,10 +29,10 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Login berhasil.',
-            'token'   => $token,
-            'user'    => [
-                'id'    => $user->id,
-                'name'  => $user->name,
+            'token' => $token,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
                 'email' => $user->email,
             ],
         ]);
@@ -50,9 +50,9 @@ class AuthController extends Controller
         $user = $request->user()->load('profile');
 
         return response()->json([
-            'id'      => $user->id,
-            'name'    => $user->name,
-            'email'   => $user->email,
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
             'profile' => $user->profile,
         ]);
     }

@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Buku extends Model
 {
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'bukus';
 
@@ -37,6 +38,13 @@ class Buku extends Model
 
     public function denda()
     {
-        return $this->hasMany(Denda::class, 'buku_id');
+        return $this->hasManyThrough(
+            Denda::class,
+            Peminjaman::class,
+            'buku_id',       // FK di peminjaman → bukus
+            'peminjaman_id', // FK di denda → peminjaman
+            'id',            // PK di bukus
+            'id',            // PK di peminjaman
+        );
     }
 }

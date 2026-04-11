@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Buku;
+use Illuminate\Database\Seeder;
 
 class BukuSeeder extends Seeder
 {
@@ -16,7 +16,7 @@ class BukuSeeder extends Seeder
                 'stok' => 10,
                 'deskripsi' => 'Kisah perjuangan dan kehilangan.',
                 'created_at' => now(),
-                'updated_at' => now()
+                'updated_at' => now(),
             ],
             [
                 'judul' => 'Bumi',
@@ -24,7 +24,7 @@ class BukuSeeder extends Seeder
                 'stok' => 8,
                 'deskripsi' => 'Petualangan dunia paralel.',
                 'created_at' => now(),
-                'updated_at' => now()
+                'updated_at' => now(),
             ],
             [
                 'judul' => 'Negeri 5 Menara',
@@ -32,7 +32,7 @@ class BukuSeeder extends Seeder
                 'stok' => 12,
                 'deskripsi' => 'Kisah santri dengan mimpi besar.',
                 'created_at' => now(),
-                'updated_at' => now()
+                'updated_at' => now(),
             ],
             [
                 'judul' => 'Dilan 1990',
@@ -40,7 +40,7 @@ class BukuSeeder extends Seeder
                 'stok' => 15,
                 'deskripsi' => 'Cerita cinta remaja.',
                 'created_at' => now(),
-                'updated_at' => now()
+                'updated_at' => now(),
             ],
             [
                 'judul' => 'Ayat-Ayat Cinta',
@@ -48,7 +48,7 @@ class BukuSeeder extends Seeder
                 'stok' => 7,
                 'deskripsi' => 'Kisah cinta religi.',
                 'created_at' => now(),
-                'updated_at' => now()
+                'updated_at' => now(),
             ],
             [
                 'judul' => 'Perahu Kertas',
@@ -56,7 +56,7 @@ class BukuSeeder extends Seeder
                 'stok' => 9,
                 'deskripsi' => 'Cinta dan mimpi.',
                 'created_at' => now(),
-                'updated_at' => now()
+                'updated_at' => now(),
             ],
             [
                 'judul' => 'Hujan',
@@ -64,7 +64,7 @@ class BukuSeeder extends Seeder
                 'stok' => 11,
                 'deskripsi' => 'Cerita kehilangan.',
                 'created_at' => now(),
-                'updated_at' => now()
+                'updated_at' => now(),
             ],
             [
                 'judul' => 'Filosofi Teras',
@@ -72,7 +72,7 @@ class BukuSeeder extends Seeder
                 'stok' => 6,
                 'deskripsi' => 'Belajar stoikisme.',
                 'created_at' => now(),
-                'updated_at' => now()
+                'updated_at' => now(),
             ],
             [
                 'judul' => 'Rich Dad Poor Dad',
@@ -80,7 +80,7 @@ class BukuSeeder extends Seeder
                 'stok' => 5,
                 'deskripsi' => 'Edukasi finansial.',
                 'created_at' => now(),
-                'updated_at' => now()
+                'updated_at' => now(),
             ],
             [
                 'judul' => 'Atomic Habits',
@@ -88,7 +88,7 @@ class BukuSeeder extends Seeder
                 'stok' => 13,
                 'deskripsi' => 'Kebiasaan kecil berdampak besar.',
                 'created_at' => now(),
-                'updated_at' => now()
+                'updated_at' => now(),
             ],
         ]);
     }

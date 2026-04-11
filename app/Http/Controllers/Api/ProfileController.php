@@ -13,9 +13,9 @@ class ProfileController extends Controller
         $user = $request->user()->load('profile');
 
         return response()->json([
-            'id'      => $user->id,
-            'name'    => $user->name,
-            'email'   => $user->email,
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
             'profile' => $user->profile,
         ]);
     }
@@ -25,11 +25,11 @@ class ProfileController extends Controller
         $user = $request->user();
 
         $request->validate([
-            'name'          => 'sometimes|required|string|max:255',
-            'no_hp'         => 'nullable|string|max:20',
-            'alamat'        => 'nullable|string',
+            'name' => 'sometimes|required|string|max:255',
+            'no_hp' => 'nullable|string|max:20',
+            'alamat' => 'nullable|string',
             'tanggal_lahir' => 'nullable|date',
-            'foto'          => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         if ($request->filled('name')) {
@@ -52,10 +52,10 @@ class ProfileController extends Controller
 
         return response()->json([
             'message' => 'Profil berhasil diperbarui.',
-            'data'    => [
-                'id'      => $user->id,
-                'name'    => $user->name,
-                'email'   => $user->email,
+            'data' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
                 'profile' => $profile,
             ],
         ]);

@@ -17,7 +17,7 @@
                 <ul class="footer-nav">
                     <li><a href="{{ url('/') }}">Beranda</a></li>
                     <li><a href="{{ route('daftarbuku') }}">Koleksi Buku</a></li>
-                    <li><a href="{{ route('peminjaman.create') }}">Peminjaman</a></li>
+                    <li><a href="#">Peminjaman</a></li>
                     <li><a href="#">Tentang Kami</a></li>
                     <li><a href="#">Hubungi Kami</a></li>
                 </ul>

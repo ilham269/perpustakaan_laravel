@@ -1,88 +1,82 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 @section('title', 'Data Buku')
+@section('page-title', 'Data Buku')
+
+@push('styles')
+@include('admin.partials.index-styles')
+@endpush
 
 @section('content')
-<div class="container py-5">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h3 style="color: var(--secondary-color);">Data Buku</h3>
-            <p class="text-muted mb-0">Kelola koleksi buku perpustakaan</p>
-        </div>
-        <a href="{{ route('buku.create') }}" class="btn custom-btn">
-            <i class="bi-plus-circle me-1"></i> Tambah Buku
-        </a>
+@include('admin.partials.flash')
+
+<div class="idx-toolbar">
+    <div>
+        <div class="idx-count">{{ $bukus->total() }} buku terdaftar</div>
     </div>
+    <a href="{{ route('admin.buku.create') }}" class="idx-btn-add">
+        <i class="bi bi-plus-lg me-1"></i> Tambah Buku
+    </a>
+</div>
 
-    @if (session('success'))
-        <div class="alert-success-custom mb-4">
-            <i class="bi-check-circle me-2"></i>{{ session('success') }}
-        </div>
-    @endif
-
-    <div class="table-card">
-        <div class="table-responsive">
-            <table class="table table-hover mb-0">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Gambar</th>
-                        <th>Judul</th>
-                        <th>Penulis</th>
-                        <th>Stok</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($bukus as $buku)
-                    <tr>
-                        <td>{{ $loop->iteration + ($bukus->currentPage() - 1) * $bukus->perPage() }}</td>
-                        <td><div class="form-group-custom">
-    <label for="gambar">Cover Buku</label>
-
-    <img id="preview" 
-         src="{{ !empty($buku->gambar) ? asset('storage/' . $buku->gambar) : '' }}" 
-         style="display:block; width:100px; height:140px; object-fit:cover; border-radius:8px; margin-bottom:10px;">
-</div></td>
-                        <td>{{ $buku->judul }}</td>
-                        <td>{{ $buku->penulis }}</td>
-                        <td>
-                            <span class="badge-stok {{ $buku->stok > 0 ? 'stok-ada' : 'stok-habis' }}">
-                                {{ $buku->stok }}
-                            </span>
-                        </td>
-                        <td>
-                            <a href="{{ route('buku.show', $buku) }}" class="btn-aksi btn-detail">
-                                <i class="bi-eye"></i>
+<div class="idx-card">
+    <div class="table-responsive">
+        <table class="idx-table">
+            <thead>
+                <tr>
+                    <th style="width:48px">#</th>
+                    <th style="width:72px">Cover</th>
+                    <th>Judul</th>
+                    <th>Penulis</th>
+                    <th style="width:80px">Stok</th>
+                    <th style="width:110px">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($bukus as $buku)
+                <tr>
+                    <td class="text-muted">{{ $loop->iteration + ($bukus->currentPage() - 1) * $bukus->perPage() }}</td>
+                    <td>
+                        <img src="{{ $buku->gambar ? asset('storage/'.$buku->gambar) : 'https://via.placeholder.com/48x64/f1f5f9/94a3b8?text=📖' }}"
+                             class="idx-cover" alt="{{ $buku->judul }}">
+                    </td>
+                    <td class="fw-semibold">{{ $buku->judul }}</td>
+                    <td class="text-muted">{{ $buku->penulis }}</td>
+                    <td>
+                        <span class="idx-badge {{ $buku->stok > 0 ? 'badge-success' : 'badge-danger' }}">
+                            {{ $buku->stok }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="idx-actions">
+                            <a href="{{ route('admin.buku.show', $buku) }}" class="ia-btn ia-view" title="Detail">
+                                <i class="bi bi-eye"></i>
                             </a>
-                            <a href="{{ route('buku.edit', $buku) }}" class="btn-aksi btn-edit">
-                                <i class="bi-pencil"></i>
+                            <a href="{{ route('admin.buku.edit', $buku) }}" class="ia-btn ia-edit" title="Edit">
+                                <i class="bi bi-pencil"></i>
                             </a>
-                            <form action="{{ route('buku.destroy', $buku) }}" method="POST" class="d-inline"
+                            <form action="{{ route('admin.buku.destroy', $buku) }}" method="POST" class="d-inline"
                                   onsubmit="return confirm('Hapus buku ini?')">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="btn-aksi btn-hapus">
-                                    <i class="bi-trash"></i>
-                                </button>
+                                <button class="ia-btn ia-del" title="Hapus"><i class="bi bi-trash"></i></button>
                             </form>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="5" class="text-center text-muted py-4">Belum ada data buku.</td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-        @if ($bukus->hasPages())
-        <div class="px-4 py-3 border-top">
-            {{ $bukus->links() }}
-        </div>
-        @endif
+                        </div>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="6" class="idx-empty">
+                        <i class="bi bi-inbox fs-2 d-block mb-2"></i>
+                        Belum ada data buku.
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
-
+    @if ($bukus->hasPages())
+    <div class="idx-pagination">{{ $bukus->links() }}</div>
+    @endif
 </div>
+
 @endsection
-
-

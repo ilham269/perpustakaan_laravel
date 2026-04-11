@@ -10,7 +10,7 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
+    {
         Schema::create('denda', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('peminjaman_id');
@@ -20,13 +20,13 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
-}
+    }
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('dendas');
+        Schema::dropIfExists('denda');
     }
 };

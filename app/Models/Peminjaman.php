@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Peminjaman extends Model
 {
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'peminjaman';
 
@@ -22,7 +23,7 @@ class Peminjaman extends Model
 
     protected $casts = [
         'tanggal_request' => 'date',
-        'tanggal_pinjam'  => 'date',
+        'tanggal_pinjam' => 'date',
         'tanggal_kembali' => 'date',
     ];
 
@@ -49,10 +50,13 @@ class Peminjaman extends Model
     /** Hitung keterlambatan dalam hari */
     public function hariTerlambat(): int
     {
-        if ($this->status !== 'dikembalikan' || !$this->tanggal_kembali || !$this->tanggal_pinjam) {
+        if ($this->status !== 'dikembalikan' || ! $this->tanggal_kembali || ! $this->tanggal_pinjam) {
             return 0;
         }
-        $batas = $this->tanggal_pinjam->addDays(7);
-        return max(0, $batas->diffInDays($this->tanggal_kembali, false) * -1);
+        // batas = tanggal_pinjam + 7 hari
+        // diffInDays(false) = signed: positif kalau $batas < $tanggal_kembali (terlambat)
+        $batas = $this->tanggal_pinjam->copy()->addDays(7);
+
+        return max(0, (int) $batas->diffInDays($this->tanggal_kembali, false));
     }
 }

@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Buku;
-use App\Models\Catalog;
-
+use Illuminate\Http\Request;
 
 class DetailBukuController extends Controller
 {
@@ -38,7 +36,7 @@ class DetailBukuController extends Controller
      */
     public function show($id)
     {
-        $buku = Buku::findOrFail($id);
+        $buku = Buku::with('catalog')->findOrFail($id);
 
         return view('detailbuku.show', compact('buku'));
     }

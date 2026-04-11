@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Catalog;
-use App\Models\Buku;
 
+use App\Models\Buku;
+use App\Models\Catalog;
 use Illuminate\Http\Request;
 
 class DaftarBukuController extends Controller
@@ -12,19 +12,19 @@ class DaftarBukuController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-{
-    $catalogs = Catalog::all();
+    {
+        $catalogs = Catalog::all();
 
-    $query = Buku::with('catalog');
+        $query = Buku::with('catalog');
 
-    if ($request->catalog) {
-        $query->where('catalog_id', $request->catalog);
+        if ($request->catalog) {
+            $query->where('catalog_id', $request->catalog);
+        }
+
+        $bukus = $query->get();
+
+        return view('daftarbuku', compact('bukus', 'catalogs'));
     }
-
-    $bukus = $query->get();
-
-    return view('daftarbuku', compact('bukus', 'catalogs'));
-}
 
     /**
      * Show the form for creating a new resource.

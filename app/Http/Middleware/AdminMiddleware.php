@@ -8,11 +8,16 @@ use Illuminate\Http\Request;
 class AdminMiddleware
 {
     public function handle(Request $request, Closure $next)
-{
-    if (!auth()->check() || strtolower(auth()->user()->role) !== 'admin') {
-        abort(403, 'AKSES DITOLAK!');
-    }
+    {
+        if (! auth()->check() || strtolower(auth()->user()->role) !== 'admin') {
+            // Kalau request dari API, kembalikan JSON bukan halaman 403
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Akses ditolak. Hanya admin.'], 403);
+            }
 
-    return $next($request);
-}
+            abort(403, 'AKSES DITOLAK!');
+        }
+
+        return $next($request);
+    }
 }

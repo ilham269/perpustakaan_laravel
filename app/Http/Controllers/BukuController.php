@@ -10,13 +10,13 @@ class BukuController extends Controller
 {
     public function __construct()
     {
-       $this->middleware(['auth', 'admin']);
+        $this->middleware(['auth', 'admin']);
     }
 
-    
     public function index()
     {
         $bukus = Buku::latest()->paginate(10);
+
         return view('admin.buku.index', compact('bukus'));
     }
 
@@ -30,11 +30,11 @@ class BukuController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'judul'     => 'required|string|max:255',
-            'penulis'   => 'required|string|max:255',
-            'stok'      => 'required|integer|min:0',
+            'judul' => 'required|string|max:255',
+            'penulis' => 'required|string|max:255',
+            'stok' => 'required|integer|min:0',
             'deskripsi' => 'nullable|string',
-            'gambar'    => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         // upload gambar
@@ -42,7 +42,7 @@ class BukuController extends Controller
             $file = $request->file('gambar');
 
             // rename biar rapi
-            $filename = time() . '_' . str_replace(' ', '_', $file->getClientOriginalName());
+            $filename = time().'_'.str_replace(' ', '_', $file->getClientOriginalName());
 
             $data['gambar'] = $file->storeAs('buku', $filename, 'public');
         }
@@ -50,13 +50,14 @@ class BukuController extends Controller
         Buku::create($data);
 
         return redirect()->route('admin.buku.index')
-                         ->with('success', 'Buku berhasil ditambahkan.');
+            ->with('success', 'Buku berhasil ditambahkan.');
     }
 
     // 👁️ DETAIL
     public function show(Buku $buku)
     {
         $buku->load('peminjaman.user');
+
         return view('admin.buku.show', compact('buku'));
     }
 
@@ -70,11 +71,11 @@ class BukuController extends Controller
     public function update(Request $request, Buku $buku)
     {
         $data = $request->validate([
-            'judul'     => 'required|string|max:255',
-            'penulis'   => 'required|string|max:255',
-            'stok'      => 'required|integer|min:0',
+            'judul' => 'required|string|max:255',
+            'penulis' => 'required|string|max:255',
+            'stok' => 'required|integer|min:0',
             'deskripsi' => 'nullable|string',
-            'gambar'    => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         // kalau upload gambar baru
@@ -86,7 +87,7 @@ class BukuController extends Controller
             }
 
             $file = $request->file('gambar');
-            $filename = time() . '_' . str_replace(' ', '_', $file->getClientOriginalName());
+            $filename = time().'_'.str_replace(' ', '_', $file->getClientOriginalName());
 
             $data['gambar'] = $file->storeAs('buku', $filename, 'public');
         }
@@ -94,7 +95,7 @@ class BukuController extends Controller
         $buku->update($data);
 
         return redirect()->route('admin.buku.index')
-                         ->with('success', 'Buku berhasil diperbarui.');
+            ->with('success', 'Buku berhasil diperbarui.');
     }
 
     // 🗑️ DELETE + HAPUS FILE
@@ -107,6 +108,6 @@ class BukuController extends Controller
         $buku->delete();
 
         return redirect()->route('admin.buku.index')
-                         ->with('success', 'Buku berhasil dihapus.');
+            ->with('success', 'Buku berhasil dihapus.');
     }
 }

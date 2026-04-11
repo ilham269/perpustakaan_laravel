@@ -1,5 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 @section('title', 'Detail Peminjaman')
+@section('page-title', 'Detail Peminjaman')
 
 @section('content')
 <style>
@@ -48,7 +49,7 @@ body {
         <div class="col-lg-8 col-12">
 
             <div class="mb-4">
-                <a href="{{ route('peminjaman.index') }}" class="btn btn-link text-decoration-none text-muted p-0">
+                <a href="{{ route('admin.peminjaman.index') }}" class="btn btn-link text-decoration-none text-muted p-0">
                     <i class="bi bi-arrow-left-short fs-4"></i> Kembali ke Daftar
                 </a>
             </div>
@@ -91,10 +92,10 @@ body {
                 </div>
 
                 <div class="card-footer bg-light border-top py-3 px-4 d-flex">
-                    <a href="{{ route('peminjaman.edit', $peminjaman) }}" class="btn btn-warning btn-sm me-2 text-white px-3">
+                    <a href="{{ route('admin.peminjaman.edit', $peminjaman) }}" class="btn btn-warning btn-sm me-2 text-white px-3">
                         <i class="bi bi-pencil-square me-1"></i> Edit
                     </a>
-                    <form action="{{ route('peminjaman.destroy', $peminjaman) }}" method="POST" onsubmit="return confirm('Hapus data peminjaman ini?')">
+                    <form action="{{ route('admin.peminjaman.destroy', $peminjaman) }}" method="POST" onsubmit="return confirm('Hapus data peminjaman ini?')">
                         @csrf @method('DELETE')
                         <button type="submit" class="btn btn-outline-danger btn-sm px-3">
                             <i class="bi bi-trash me-1"></i> Hapus
@@ -115,7 +116,7 @@ body {
                     
                     <div class="text-end">
                         @if ($peminjaman->denda->status === 'belum bayar')
-                            <form action="{{ route('denda.bayar', $peminjaman->denda) }}" method="POST">
+                            <form action="{{ route('admin.denda.bayar', $peminjaman->denda) }}" method="POST">
                                 @csrf @method('PATCH')
                                 <button type="submit" class="btn btn-danger px-4 shadow-sm">
                                     <i class="bi bi-cash-coin me-2"></i> Bayar Sekarang

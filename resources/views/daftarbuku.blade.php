@@ -58,7 +58,7 @@
                     </div>
 
                     <div class="card-footer bg-white border-0">
-                        <a href="#" class="btn w-100"
+                        <a href="{{ route('detailbuku.show', $buku->id) }}" class="btn w-100"
                            style="background:#5c3d2e; color:white;">
                             Detail
                         </a>

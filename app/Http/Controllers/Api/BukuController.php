@@ -13,8 +13,8 @@ class BukuController extends Controller
         $query = Buku::with('catalog:id,nama');
 
         if ($request->filled('search')) {
-            $query->where('judul', 'like', '%' . $request->search . '%')
-                  ->orWhere('penulis', 'like', '%' . $request->search . '%');
+            $query->where('judul', 'like', '%'.$request->search.'%')
+                ->orWhere('penulis', 'like', '%'.$request->search.'%');
         }
 
         if ($request->filled('stok')) {
@@ -34,18 +34,18 @@ class BukuController extends Controller
     {
         $data = $request->validate([
             'catalog_id' => 'nullable|exists:catalogs,id',
-            'judul'      => 'required|string|max:255',
-            'penulis'    => 'required|string|max:255',
-            'stok'       => 'required|integer|min:0',
-            'deskripsi'  => 'nullable|string',
-            'gambar'     => 'nullable|string',
+            'judul' => 'required|string|max:255',
+            'penulis' => 'required|string|max:255',
+            'stok' => 'required|integer|min:0',
+            'deskripsi' => 'nullable|string',
+            'gambar' => 'nullable|string',
         ]);
 
         $buku = Buku::create($data);
 
         return response()->json([
             'message' => 'Buku berhasil ditambahkan.',
-            'data'    => $buku->load('catalog:id,nama'),
+            'data' => $buku->load('catalog:id,nama'),
         ], 201);
     }
 
@@ -58,18 +58,18 @@ class BukuController extends Controller
     {
         $data = $request->validate([
             'catalog_id' => 'nullable|exists:catalogs,id',
-            'judul'      => 'sometimes|required|string|max:255',
-            'penulis'    => 'sometimes|required|string|max:255',
-            'stok'       => 'sometimes|required|integer|min:0',
-            'deskripsi'  => 'nullable|string',
-            'gambar'     => 'nullable|string',
+            'judul' => 'sometimes|required|string|max:255',
+            'penulis' => 'sometimes|required|string|max:255',
+            'stok' => 'sometimes|required|integer|min:0',
+            'deskripsi' => 'nullable|string',
+            'gambar' => 'nullable|string',
         ]);
 
         $buku->update($data);
 
         return response()->json([
             'message' => 'Buku berhasil diperbarui.',
-            'data'    => $buku->load('catalog:id,nama'),
+            'data' => $buku->load('catalog:id,nama'),
         ]);
     }
 

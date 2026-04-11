@@ -20,20 +20,20 @@ return new class extends Migration
             $table->timestamps();
         });
 
-
-
-        
         // Foreign key ditambah setelah catalogs table ada
         Schema::table('bukus', function (Blueprint $table) {
             $table->foreign('catalog_id')
-                  ->references('id')
-                  ->on('catalogs')
-                  ->nullOnDelete();
+                ->references('id')
+                ->on('catalogs')
+                ->nullOnDelete();
         });
     }
 
     public function down(): void
     {
+        Schema::table('bukus', function (Blueprint $table) {
+            $table->dropForeign(['catalog_id']);
+        });
         Schema::dropIfExists('bukus');
     }
 };

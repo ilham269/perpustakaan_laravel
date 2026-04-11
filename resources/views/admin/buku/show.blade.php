@@ -1,5 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 @section('title', $buku->judul)
+@section('page-title', 'Detail Buku')
 
 @section('content')
 <div class="container py-5">
@@ -7,7 +8,7 @@
         <div class="col-lg-8 col-12">
 
             <div class="mb-4">
-                <a href="{{ route('buku.index') }}" class="back-link">
+                <a href="{{ route('admin.buku.index') }}" class="back-link">
                     <i class="bi-arrow-left me-1"></i> Kembali
                 </a>
             </div>
@@ -26,10 +27,10 @@
                     <p class="mb-0">{{ $buku->deskripsi ?? 'Tidak ada deskripsi.' }}</p>
                 </div>
                 <div class="detail-card-footer">
-                    <a href="{{ route('buku.edit', $buku) }}" class="btn custom-btn btn-sm me-2">
+                    <a href="{{ route('admin.buku.edit', $buku) }}" class="btn custom-btn btn-sm me-2">
                         <i class="bi-pencil me-1"></i> Edit
                     </a>
-                    <form action="{{ route('buku.destroy', $buku) }}" method="POST" class="d-inline"
+                    <form action="{{ route('admin.buku.destroy', $buku) }}" method="POST" class="d-inline"
                           onsubmit="return confirm('Hapus buku ini?')">
                         @csrf @method('DELETE')
                         <button type="submit" class="btn custom-border-btn custom-btn btn-sm">

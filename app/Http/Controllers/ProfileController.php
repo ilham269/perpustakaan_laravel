@@ -15,15 +15,17 @@ class ProfileController extends Controller
 
     public function show()
     {
-        $user    = Auth::user();
+        $user = Auth::user();
         $profile = $user->profile;
+
         return view('profile.show', compact('user', 'profile'));
     }
 
     public function edit()
     {
-        $user    = Auth::user();
+        $user = Auth::user();
         $profile = $user->profile;
+
         return view('profile.edit', compact('user', 'profile'));
     }
 
@@ -32,11 +34,11 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         $request->validate([
-            'name'          => 'required|string|max:255',
-            'no_hp'         => 'nullable|string|max:20',
-            'alamat'        => 'nullable|string',
+            'name' => 'required|string|max:255',
+            'no_hp' => 'nullable|string|max:20',
+            'alamat' => 'nullable|string',
             'tanggal_lahir' => 'nullable|date',
-            'foto'          => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         // Update nama user
@@ -59,6 +61,6 @@ class ProfileController extends Controller
         );
 
         return redirect()->route('profile.show')
-                         ->with('success', 'Profil berhasil diperbarui.');
+            ->with('success', 'Profil berhasil diperbarui.');
     }
 }

@@ -23,7 +23,7 @@ class CatalogController extends Controller
 
         return response()->json([
             'message' => 'Catalog berhasil ditambahkan.',
-            'data'    => $catalog,
+            'data' => $catalog,
         ], 201);
     }
 
@@ -35,14 +35,14 @@ class CatalogController extends Controller
     public function update(Request $request, Catalog $catalog)
     {
         $data = $request->validate([
-            'nama' => 'required|string|max:100|unique:catalogs,nama,' . $catalog->id,
+            'nama' => 'required|string|max:100|unique:catalogs,nama,'.$catalog->id,
         ]);
 
         $catalog->update($data);
 
         return response()->json([
             'message' => 'Catalog berhasil diperbarui.',
-            'data'    => $catalog,
+            'data' => $catalog,
         ]);
     }
 

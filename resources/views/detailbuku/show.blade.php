@@ -141,7 +141,7 @@
     {{-- Cover Buku --}}
     <div class="book-banner">
       <img class="book-cover"
-           src="{{ asset('storage/' . $buku->gambar) }}"
+           src="{{ $buku->gambar ? asset('storage/' . $buku->gambar) : 'https://via.placeholder.com/140x195/EDE0BE/9A8860?text=No+Cover' }}"
            alt="Cover {{ $buku->judul }}">
     </div>
 
@@ -153,30 +153,41 @@
 
       <div class="divider"></div>
 
-      {{-- Meta Info (sesuaikan field dengan model kamu) --}}
       <div class="book-meta">
         <div class="meta-item">
-          <div class="meta-label">Tahun Terbit</div>
-          <div class="meta-value">{{ $buku->tahun ?? '-' }}</div>
+          <div class="meta-label">Katalog</div>
+          <div class="meta-value">{{ $buku->catalog->nama ?? '-' }}</div>
         </div>
         <div class="meta-item">
           <div class="meta-label">Status</div>
-          <div class="meta-value">Tersedia</div>
+          <div class="meta-value">{{ $buku->stok > 0 ? 'Tersedia' : 'Habis' }}</div>
         </div>
-        <div class="meta-item">
-          <div class="meta-label">Kategori</div>
-          <div class="meta-value">{{ $buku->kategori ?? '-' }}</div>
+        <div class="meta-item" style="grid-column: 1 / -1;">
+          <div class="meta-label">Deskripsi</div>
+          <div class="meta-value">{{ $buku->deskripsi ?? 'Tidak ada deskripsi.' }}</div>
         </div>
         <div class="meta-item">
           <div class="meta-label">Stok</div>
-          <div class="meta-value">{{ $buku->stok ?? '-' }} buku</div>
+          <div class="meta-value">{{ $buku->stok }} buku</div>
         </div>
       </div>
 
       {{-- Tombol Pinjam --}}
-      <a class="btn-pinjam" href="{{ route('peminjaman.create', $buku->id) }}">
-         Pinjam Buku
-      </a>
+      @auth
+        @if ($buku->stok > 0)
+          <a class="btn-pinjam" href="{{ route('user.peminjaman.create', ['buku_id' => $buku->id]) }}">
+            📖 &nbsp;Pinjam Buku
+          </a>
+        @else
+          <button class="btn-pinjam" disabled style="opacity:0.5;cursor:not-allowed;">
+            Stok Habis
+          </button>
+        @endif
+      @else
+        <a class="btn-pinjam" href="{{ route('login') }}">
+          Login untuk Meminjam
+        </a>
+      @endauth
     </div>
 
   </div>

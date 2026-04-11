@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Buku;
-use App\Models\Denda;
+use App\Http\Requests\StorePeminjamanRequest;
+use App\Http\Requests\UpdatePeminjamanRequest;
 use App\Models\Peminjaman;
+use App\Services\PeminjamanService;
 use Illuminate\Http\Request;
 
 class PeminjamanController extends Controller
 {
+    public function __construct(private PeminjamanService $service) {}
+
     public function index(Request $request)
     {
         $query = Peminjaman::with(['user:id,name,email', 'buku:id,judul,penulis']);
@@ -27,29 +30,17 @@ class PeminjamanController extends Controller
         );
     }
 
-    public function store(Request $request)
+    public function store(StorePeminjamanRequest $request)
     {
-        $data = $request->validate([
-            'user_id'         => 'required|exists:users,id',
-            'buku_id'         => 'required|exists:bukus,id',
-            'tanggal_request' => 'required|date',
-            'tanggal_pinjam'  => 'nullable|date|after_or_equal:tanggal_request',
-            'tanggal_kembali' => 'nullable|date|after_or_equal:tanggal_pinjam',
-            'status'          => 'required|in:pending,disetujui,ditolak,dikembalikan',
-        ]);
-
-        $peminjaman = Peminjaman::create($data);
-
-        if ($data['status'] === 'disetujui') {
-            $buku = Buku::find($data['buku_id']);
-            if ($buku && $buku->stok > 0) {
-                $buku->decrement('stok');
-            }
+        try {
+            $peminjaman = $this->service->buat($request->validated());
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 422);
         }
 
         return response()->json([
             'message' => 'Peminjaman berhasil dibuat.',
-            'data'    => $peminjaman->load(['user:id,name', 'buku:id,judul']),
+            'data' => $peminjaman->load(['user:id,name', 'buku:id,judul']),
         ], 201);
     }
 
@@ -60,43 +51,17 @@ class PeminjamanController extends Controller
         );
     }
 
-    public function update(Request $request, Peminjaman $peminjaman)
+    public function update(UpdatePeminjamanRequest $request, Peminjaman $peminjaman)
     {
-        $data = $request->validate([
-            'user_id'         => 'sometimes|required|exists:users,id',
-            'buku_id'         => 'sometimes|required|exists:bukus,id',
-            'tanggal_request' => 'sometimes|required|date',
-            'tanggal_pinjam'  => 'nullable|date',
-            'tanggal_kembali' => 'nullable|date',
-            'status'          => 'sometimes|required|in:pending,disetujui,ditolak,dikembalikan',
-        ]);
-
-        $statusLama = $peminjaman->status;
-        $peminjaman->update($data);
-
-        if (isset($data['status'])) {
-            if ($data['status'] === 'dikembalikan' && $statusLama !== 'dikembalikan') {
-                $peminjaman->buku->increment('stok');
-
-                $hari = $peminjaman->hariTerlambat();
-                if ($hari > 0 && !$peminjaman->denda) {
-                    Denda::create([
-                        'peminjaman_id'  => $peminjaman->id,
-                        'terlambat_hari' => $hari,
-                        'total_denda'    => Denda::hitung($hari),
-                        'status'         => 'belum bayar',
-                    ]);
-                }
-            }
-
-            if ($data['status'] === 'disetujui' && $statusLama === 'pending') {
-                $peminjaman->buku->decrement('stok');
-            }
+        try {
+            $peminjaman = $this->service->ubah($peminjaman, $request->validated());
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 422);
         }
 
         return response()->json([
             'message' => 'Peminjaman berhasil diperbarui.',
-            'data'    => $peminjaman->load(['user:id,name', 'buku:id,judul', 'denda']),
+            'data' => $peminjaman->load(['user:id,name', 'buku:id,judul', 'denda']),
         ]);
     }
 

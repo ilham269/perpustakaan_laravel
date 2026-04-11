@@ -10,7 +10,7 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
+    {
         Schema::create('detail_peminjaman', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('peminjaman_id');
@@ -18,13 +18,13 @@ return new class extends Migration
             $table->integer('jumlah')->default(1);
             $table->timestamps();
         });
-}
+    }
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('detailpeminjamans');
+        Schema::dropIfExists('detail_peminjaman');
     }
 };

@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -46,12 +47,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
     public function profile()
     {
-    return $this->hasOne(Profile::class);
+        return $this->hasOne(Profile::class);
     }
+
     public function peminjaman()
     {
-    return $this->hasMany(Peminjaman::class);
+        return $this->hasMany(Peminjaman::class);
     }
 }
