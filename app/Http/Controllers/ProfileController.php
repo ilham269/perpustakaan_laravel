@@ -52,7 +52,9 @@ class ProfileController extends Controller
             if ($user->profile && $user->profile->foto) {
                 Storage::disk('public')->delete($user->profile->foto);
             }
-            $profileData['foto'] = $request->file('foto')->store('profiles', 'public');
+            $ext = $request->file('foto')->extension();
+            $profileData['foto'] = $request->file('foto')
+            ->storeAs('profiles', Str::uuid().'.'.$ext, 'public');
         }
 
         $user->profile()->updateOrCreate(
