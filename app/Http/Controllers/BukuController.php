@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buku;
+use App\Models\Catalog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class BukuController extends Controller
 {
@@ -15,36 +17,33 @@ class BukuController extends Controller
 
     public function index()
     {
-        $bukus = Buku::latest()->paginate(10);
+        $bukus = Buku::with('catalog')->latest()->paginate(10);
 
         return view('admin.buku.index', compact('bukus'));
     }
 
-    // ➕ FORM CREATE
     public function create()
     {
-        return view('admin.buku.create');
+        $catalogs = Catalog::orderBy('nama')->get();
+
+        return view('admin.buku.create', compact('catalogs'));
     }
 
-    // 💾 STORE DATA + UPLOAD GAMBAR
     public function store(Request $request)
     {
         $data = $request->validate([
-            'judul' => 'required|string|max:255',
-            'penulis' => 'required|string|max:255',
-            'stok' => 'required|integer|min:0',
-            'deskripsi' => 'nullable|string',
-            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'judul'      => 'required|string|max:255',
+            'penulis'    => 'required|string|max:255',
+            'catalog_id' => 'nullable|exists:catalogs,id',
+            'stok'       => 'required|integer|min:0',
+            'deskripsi'  => 'nullable|string',
+            'gambar'     => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        // upload gambar
         if ($request->hasFile('gambar')) {
-            $file = $request->file('gambar');
-
-            // rename biar rapi
-            $filename = time().'_'.str_replace(' ', '_', $file->getClientOriginalName());
-
-            $data['gambar'] = $file->storeAs('buku', $filename, 'public');
+            $ext           = $request->file('gambar')->extension();
+            $data['gambar'] = $request->file('gambar')
+                ->storeAs('buku', Str::uuid().'.'.$ext, 'public');
         }
 
         Buku::create($data);
@@ -53,43 +52,40 @@ class BukuController extends Controller
             ->with('success', 'Buku berhasil ditambahkan.');
     }
 
-    // 👁️ DETAIL
     public function show(Buku $buku)
     {
-        $buku->load('peminjaman.user');
+        $buku->load(['catalog', 'peminjaman.user']);
 
         return view('admin.buku.show', compact('buku'));
     }
 
-    // ✏️ FORM EDIT
     public function edit(Buku $buku)
     {
-        return view('admin.buku.edit', compact('buku'));
+        $catalogs = Catalog::orderBy('nama')->get();
+
+        return view('admin.buku.edit', compact('buku', 'catalogs'));
     }
 
-    // 🔄 UPDATE + GANTI GAMBAR
     public function update(Request $request, Buku $buku)
     {
         $data = $request->validate([
-            'judul' => 'required|string|max:255',
-            'penulis' => 'required|string|max:255',
-            'stok' => 'required|integer|min:0',
-            'deskripsi' => 'nullable|string',
-            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'judul'      => 'required|string|max:255',
+            'penulis'    => 'required|string|max:255',
+            'catalog_id' => 'nullable|exists:catalogs,id',
+            'stok'       => 'required|integer|min:0',
+            'deskripsi'  => 'nullable|string',
+            'gambar'     => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        // kalau upload gambar baru
         if ($request->hasFile('gambar')) {
-
-            // 🔥 hapus gambar lama
+            // Hapus gambar lama
             if ($buku->gambar && Storage::disk('public')->exists($buku->gambar)) {
                 Storage::disk('public')->delete($buku->gambar);
             }
 
-            $file = $request->file('gambar');
-            $filename = time().'_'.str_replace(' ', '_', $file->getClientOriginalName());
-
-            $data['gambar'] = $file->storeAs('buku', $filename, 'public');
+            $ext           = $request->file('gambar')->extension();
+            $data['gambar'] = $request->file('gambar')
+                ->storeAs('buku', Str::uuid().'.'.$ext, 'public');
         }
 
         $buku->update($data);
@@ -98,7 +94,6 @@ class BukuController extends Controller
             ->with('success', 'Buku berhasil diperbarui.');
     }
 
-    // 🗑️ DELETE + HAPUS FILE
     public function destroy(Buku $buku)
     {
         if ($buku->gambar && Storage::disk('public')->exists($buku->gambar)) {
