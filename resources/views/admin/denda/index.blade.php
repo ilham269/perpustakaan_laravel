@@ -21,7 +21,7 @@
         <table class="idx-table">
             <thead>
                 <tr>
-                    <th style="width:48px">#</th>
+                    <th style="width:48px">No</th>
                     <th>Peminjam</th>
                     <th>Buku</th>
                     <th style="width:110px">Terlambat</th>

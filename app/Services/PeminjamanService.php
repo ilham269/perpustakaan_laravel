@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\DB;
 class PeminjamanService
 {
     /**
-     * Buat peminjaman baru + kurangi stok kalau langsung disetujui.
-     * Semua dibungkus transaction agar atomik.
+     * 
+     * 
      *
-     * @throws \Exception kalau stok habis
+     * @throws \Exception 
      */
     public function buat(array $data): Peminjaman
     {
@@ -29,14 +29,9 @@ class PeminjamanService
     }
 
     /**
-     * Update peminjaman + jalankan efek samping stok & denda
-     * berdasarkan transisi status (statusLama → statusBaru).
+     * 
      *
-     * Transisi yang ditangani:
-     *   pending     → disetujui   : stok dikurangi
-     *   disetujui   → dikembalikan: stok dikembalikan + hitung denda
-     *
-     * @throws \Exception kalau stok habis saat disetujui
+     * @throws \Exception 
      */
     public function ubah(Peminjaman $peminjaman, array $data): Peminjaman
     {

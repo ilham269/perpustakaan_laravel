@@ -24,7 +24,7 @@
         <table class="idx-table">
             <thead>
                 <tr>
-                    <th style="width:48px">#</th>
+                    <th style="width:48px">No</th>
                     <th style="width:72px">Cover</th>
                     <th>Judul</th>
                     <th>Penulis</th>

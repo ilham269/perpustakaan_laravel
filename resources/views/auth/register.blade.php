@@ -188,7 +188,7 @@
                                 type="text"
                                 name="name"
                                 class="login-input @error('name') is-invalid @enderror"
-                                placeholder="John Doe"
+                                placeholder="Nama lengkap"
                                 value="{{ old('name') }}"
                                 required
                                 autocomplete="name"
@@ -208,7 +208,7 @@
                                 type="email"
                                 name="email"
                                 class="login-input @error('email') is-invalid @enderror"
-                                placeholder="nama@email.com"
+                                placeholder="nama@gmail.com"
                                 value="{{ old('email') }}"
                                 required
                                 autocomplete="email">

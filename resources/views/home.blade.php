@@ -85,7 +85,7 @@
 {{-- Flash --}}
 @if (session('success'))
   <div class="container mt-3">
-    <div class="alert-success-custom">✅ &nbsp;{{ session('success') }}</div>
+    <div class="alert-success-custom"> &nbsp;{{ session('success') }}</div>
   </div>
 @endif
 
@@ -93,9 +93,9 @@
 <section class="hero-section">
   <div class="container d-flex align-items-center justify-content-between flex-wrap gap-4">
     <div style="max-width: 420px;">
-      <h1 class="hero-title">Halo, {{ Auth::user()->name }} 👋</h1>
+      <h1 class="hero-title">Halo, Selamat datang {{ Auth::user()->name }}</h1>
       <p class="hero-sub">Selamat datang di Perpustakaan. Temukan buku favoritmu dan pinjam dengan mudah.</p>
-      <a href="{{ route('user.peminjaman.create') }}" class="btn-hero">📖 Pinjam Buku</a>
+      <a href="{{ route('user.peminjaman.create') }}" class="btn-hero"> Pinjam Buku</a>
       <a href="{{ route('daftarbuku') }}" class="btn-hero-outline">Jelajahi Koleksi</a>
     </div>
     <img src="https://cdn-icons-png.flaticon.com/512/2232/2232688.png" class="hero-img" alt="Buku">

@@ -24,7 +24,7 @@
         <table class="idx-table">
             <thead>
                 <tr>
-                    <th style="width:48px">#</th>
+                    <th style="width:48px">No</th>
                     <th>Nama Katalog</th>
                     <th style="width:120px">Jumlah Buku</th>
                     <th style="width:110px">Aksi</th>

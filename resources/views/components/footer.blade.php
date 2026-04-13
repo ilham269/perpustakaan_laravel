@@ -13,14 +13,7 @@
 
             {{-- Navigasi --}}
             <div class="col-lg-3 col-md-6 mb-4">
-                <h5 class="footer-title">Navigasi</h5>
-                <ul class="footer-nav">
-                    <li><a href="{{ url('/') }}">Beranda</a></li>
-                    <li><a href="{{ route('daftarbuku') }}">Koleksi Buku</a></li>
-                    <li><a href="#">Peminjaman</a></li>
-                    <li><a href="#">Tentang Kami</a></li>
-                    <li><a href="#">Hubungi Kami</a></li>
-                </ul>
+                
             </div>
 
             {{-- Kontak --}}

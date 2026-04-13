@@ -73,10 +73,11 @@
         </li>
 
         @auth
-        <li class="nav-item">
-          <a class="nav-link {{ request()->routeIs('user.peminjaman.*') ? 'active' : '' }}"
-             href="{{ route('user.peminjaman.index') }}">Pinjaman Saya</a>
-        </li>
+          @if(auth()->user()->role !== 'admin')
+          <li class="nav-item">
+            <a class="nav-link ..." href="{{ route('user.peminjaman.index') }}">Pinjaman Saya</a>
+          </li>
+          @endif
 
         <li class="nav-item">
           <a class="nav-link {{ request()->routeIs('profile.*') ? 'active' : '' }}"
