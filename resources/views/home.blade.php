@@ -15,84 +15,19 @@
     background: #F9F4EA;
   }
 
-  /* ────────────────────────────────
-     ALERT
-  ──────────────────────────────── */
-  .alert-custom {
-    background: #F0E6C8;
-    border: 1px solid #D4C490;
-    color: #5C4220;
-    border-radius: 10px;
-    padding: 12px 16px;
-    font-size: 14px;
-  }
-
-  /* ────────────────────────────────
-     HERO
-  ──────────────────────────────── */
-  .hero-section {
-    background: #F9F4EA;
-    padding: 3rem 0 2.5rem;
-    border-bottom: 1px solid #E8DFC8;
-  }
-
-  .hero-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 32px;
-    font-weight: 600;
-    color: #3A2E1A;
-    line-height: 1.3;
-  }
-
-  .hero-sub {
-    font-size: 15px;
-    color: #8A7A55;
-    line-height: 1.8;
-    margin: 12px 0 24px;
-  }
-
-  .hero-img {
-    width: 200px;
-    opacity: .88;
-  }
-
-  /* Hero Buttons */
-  .btn-hero {
-    display: inline-block;
-    background: #3A2E1A;
-    color: #F5EDD6 !important;
-    font-family: 'Playfair Display', serif;
-    font-size: 14px;
-    font-weight: 500;
-    padding: 12px 28px;
-    border-radius: 10px;
-    text-decoration: none;
-    letter-spacing: .04em;
-    margin-right: 10px;
-    transition: background .2s, transform .15s;
-  }
-  .btn-hero:hover {
-    background: #4E3D24;
-    transform: translateY(-1px);
-  }
-
-  .btn-hero-outline {
-    display: inline-block;
-    border: 1.5px solid #3A2E1A;
-    color: #3A2E1A !important;
-    font-family: 'Playfair Display', serif;
-    font-size: 14px;
-    font-weight: 500;
-    padding: 11px 24px;
-    border-radius: 10px;
-    text-decoration: none;
-    letter-spacing: .04em;
-    transition: all .2s;
-  }
-  .btn-hero-outline:hover {
-    background: #3A2E1A;
-    color: #F5EDD6 !important;
-  }
+  /* ── HERO ── */
+  .hero-section { background: #F9F4EA; padding: 3rem 0; border-bottom: 1px solid #E8DFC8; }
+  .hero-title   { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 600; color: #3A2E1A; line-height: 1.3; }
+  .hero-sub     { font-size: 15px; color: #8A7A55; line-height: 1.8; margin: 12px 0 24px; }
+  .btn-hero     { display: inline-block; background: #3A2E1A; color: #F5EDD6 !important; font-family: 'Playfair Display', serif;
+                  font-size: 14px; font-weight: 500; padding: 12px 28px; border-radius: 10px; text-decoration: none;
+                  letter-spacing: .04em; transition: background .2s, transform .15s; margin-right: 10px; }
+  .btn-hero:hover { background: #4E3D24; transform: translateY(-1px); }
+  .btn-hero-outline { display: inline-block; border: 1.5px solid #3A2E1A; color: #3A2E1A !important; font-family: 'Playfair Display', serif;
+                      font-size: 14px; font-weight: 500; padding: 11px 24px; border-radius: 10px; text-decoration: none;
+                      letter-spacing: .04em; transition: all .2s; }
+  .btn-hero-outline:hover { background: #3A2E1A; color: #F5EDD6 !important; }
+  .hero-img { width: 200px; opacity: .88; }
 
   /* ────────────────────────────────
      STATS
