@@ -41,8 +41,8 @@ class Buku extends Model
         return $this->hasManyThrough(
             Denda::class,
             Peminjaman::class,
-            'buku_id',       // FK di peminjaman → bukus
-            'peminjaman_id', // FK di denda → peminjaman
+            'buku_id',       // FK di peminjaman bukus
+            'peminjaman_id', // FK di denda peminjaman
             'id',            // PK di bukus
             'id',            // PK di peminjaman
         );

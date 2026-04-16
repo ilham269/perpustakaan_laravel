@@ -8,9 +8,9 @@
   body { font-family: 'Lora', serif; background: #F9F4EA; }
 
   /* ── HERO ── */
-  .hero-section { background: #F9F4EA; padding: 3rem 0; border-bottom: 1px solid #E8DFC8; }
-  .hero-title   { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 600; color: #3A2E1A; line-height: 1.3; }
-  .hero-sub     { font-size: 15px; color: #8A7A55; line-height: 1.8; margin: 12px 0 24px; }
+  .hero-section { background: #F9F4EA; padding: 1.5rem 0; margin-bottom: 20px; border-bottom: 1px solid #E8DFC8; }
+  .hero-title   { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 600; color: #3A2E1A; line-height: 1.2; }
+  .hero-sub     { font-size: 15px; color: #8A7A55; line-height: 1.6; margin: 8px 0 16px; }
   .btn-hero     { display: inline-block; background: #3A2E1A; color: #F5EDD6 !important; font-family: 'Playfair Display', serif;
                   font-size: 14px; font-weight: 500; padding: 12px 28px; border-radius: 10px; text-decoration: none;
                   letter-spacing: .04em; transition: background .2s, transform .15s; margin-right: 10px; }
