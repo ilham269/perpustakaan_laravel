@@ -49,11 +49,11 @@
                         </h5>
 
                         <p class="text-muted mb-1">
-                            ✍️ {{ $buku->penulis }}
+                            Penulis : {{ $buku->penulis }}
                         </p>
 
                         <p class="small text-muted">
-                            🏷️ {{ $buku->catalog->nama ?? '-' }}
+                            Jenis buku : {{ $buku->catalog->nama ?? '-' }}
                         </p>
                     </div>
 

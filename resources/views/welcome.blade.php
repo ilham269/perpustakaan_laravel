@@ -111,7 +111,7 @@
 <section class="hero">
     <div class="hero-inner">
         <div class="hero-text">
-            <span class="hero-eyebrow">&#128218; Sistem Perpustakaan Digital</span>
+            <span class="hero-eyebrow"> Sistem Perpustakaan Digital</span>
             <h1 class="hero-title">
                 Temukan Dunia<br>dari <span>Ribuan Buku</span>
             </h1>

@@ -22,17 +22,18 @@ class CatalogController extends Controller
     public function store(Request $request)
     {
         $request->validate(['nama' => 'required|max:100|unique:catalogs,nama']);
+        $catalog = Catalog::create(['nama' => $request->nama]);
 
-        Catalog::create(['nama' => $request->nama]);
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'Katalog berhasil ditambahkan.', 'data' => $catalog]);
+        }
 
-        return redirect()->route('admin.catalog.index')
-            ->with('success', 'Katalog berhasil ditambahkan.');
+        return redirect()->route('admin.catalog.index')->with('success', 'Katalog berhasil ditambahkan.');
     }
 
     public function show(Catalog $catalog)
     {
         $catalog->load('bukus');
-
         return view('admin.catalog.show', compact('catalog'));
     }
 
@@ -44,18 +45,23 @@ class CatalogController extends Controller
     public function update(Request $request, Catalog $catalog)
     {
         $request->validate(['nama' => 'required|max:100|unique:catalogs,nama,' . $catalog->id]);
-
         $catalog->update(['nama' => $request->nama]);
 
-        return redirect()->route('admin.catalog.index')
-            ->with('success', 'Katalog berhasil diperbarui.');
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'Katalog berhasil diperbarui.', 'data' => $catalog]);
+        }
+
+        return redirect()->route('admin.catalog.index')->with('success', 'Katalog berhasil diperbarui.');
     }
 
     public function destroy(Catalog $catalog)
     {
         $catalog->delete();
 
-        return redirect()->route('admin.catalog.index')
-            ->with('success', 'Katalog berhasil dihapus.');
+        if (request()->expectsJson()) {
+            return response()->json(['message' => 'Katalog berhasil dihapus.']);
+        }
+
+        return redirect()->route('admin.catalog.index')->with('success', 'Katalog berhasil dihapus.');
     }
 }

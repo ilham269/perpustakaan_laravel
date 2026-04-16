@@ -24,14 +24,24 @@ class DendaController extends Controller
     {
         $denda->load(['peminjaman.user', 'peminjaman.buku']);
 
-        return view('denda.show', compact('denda'));
+        return view('admin.denda.show', compact('denda'));
     }
 
     public function bayar(Denda $denda)
     {
+        if ($denda->status === 'sudah bayar') {
+            if (request()->expectsJson()) {
+                return response()->json(['message' => 'Denda sudah lunas.'], 422);
+            }
+        }
+
         $denda->update(['status' => 'sudah bayar']);
 
-        return redirect()->route('denda.index')
+        if (request()->expectsJson()) {
+            return response()->json(['message' => 'Denda berhasil ditandai lunas.', 'data' => $denda]);
+        }
+
+        return redirect()->route('admin.denda.index')
             ->with('success', 'Denda berhasil ditandai lunas.');
     }
 
@@ -39,7 +49,11 @@ class DendaController extends Controller
     {
         $denda->delete();
 
-        return redirect()->route('denda.index')
+        if (request()->expectsJson()) {
+            return response()->json(['message' => 'Data denda berhasil dihapus.']);
+        }
+
+        return redirect()->route('admin.denda.index')
             ->with('success', 'Data denda berhasil dihapus.');
     }
 }

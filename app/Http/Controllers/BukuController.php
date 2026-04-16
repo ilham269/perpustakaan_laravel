@@ -17,9 +17,10 @@ class BukuController extends Controller
 
     public function index()
     {
-        $bukus = Buku::with('catalog')->latest()->paginate(10);
+        $bukus    = Buku::with('catalog')->latest()->paginate(10);
+        $catalogs = Catalog::orderBy('nama')->get();
 
-        return view('admin.buku.index', compact('bukus'));
+        return view('admin.buku.index', compact('bukus', 'catalogs'));
     }
 
     public function create()
@@ -46,10 +47,14 @@ class BukuController extends Controller
                 ->storeAs('buku', Str::uuid().'.'.$ext, 'public');
         }
 
-        Buku::create($data);
+        $buku = Buku::create($data);
+        $buku->load('catalog');
 
-        return redirect()->route('admin.buku.index')
-            ->with('success', 'Buku berhasil ditambahkan.');
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'Buku berhasil ditambahkan.', 'data' => $buku]);
+        }
+
+        return redirect()->route('admin.buku.index')->with('success', 'Buku berhasil ditambahkan.');
     }
 
     public function show(Buku $buku)
@@ -78,20 +83,22 @@ class BukuController extends Controller
         ]);
 
         if ($request->hasFile('gambar')) {
-            // Hapus gambar lama
             if ($buku->gambar && Storage::disk('public')->exists($buku->gambar)) {
                 Storage::disk('public')->delete($buku->gambar);
             }
-
             $ext           = $request->file('gambar')->extension();
             $data['gambar'] = $request->file('gambar')
                 ->storeAs('buku', Str::uuid().'.'.$ext, 'public');
         }
 
         $buku->update($data);
+        $buku->load('catalog');
 
-        return redirect()->route('admin.buku.index')
-            ->with('success', 'Buku berhasil diperbarui.');
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'Buku berhasil diperbarui.', 'data' => $buku]);
+        }
+
+        return redirect()->route('admin.buku.index')->with('success', 'Buku berhasil diperbarui.');
     }
 
     public function destroy(Buku $buku)
@@ -99,10 +106,12 @@ class BukuController extends Controller
         if ($buku->gambar && Storage::disk('public')->exists($buku->gambar)) {
             Storage::disk('public')->delete($buku->gambar);
         }
-
         $buku->delete();
 
-        return redirect()->route('admin.buku.index')
-            ->with('success', 'Buku berhasil dihapus.');
+        if (request()->expectsJson()) {
+            return response()->json(['message' => 'Buku berhasil dihapus.']);
+        }
+
+        return redirect()->route('admin.buku.index')->with('success', 'Buku berhasil dihapus.');
     }
 }

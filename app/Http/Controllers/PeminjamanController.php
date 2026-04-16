@@ -26,8 +26,10 @@ class PeminjamanController extends Controller
         }
 
         $peminjaman = $query->paginate(10)->withQueryString();
+        $users      = User::orderBy('name')->get();
+        $bukus      = Buku::orderBy('judul')->get();
 
-        return view('peminjaman.index', compact('peminjaman'));
+        return view('peminjaman.index', compact('peminjaman', 'users', 'bukus'));
     }
 
     public function create()
@@ -41,9 +43,17 @@ class PeminjamanController extends Controller
     public function store(StorePeminjamanRequest $request)
     {
         try {
-            $this->service->buat($request->validated());
+            $peminjaman = $this->service->buat($request->validated());
+            $peminjaman->load(['user', 'buku']);
         } catch (\Exception $e) {
+            if ($request->expectsJson()) {
+                return response()->json(['errors' => ['buku_id' => [$e->getMessage()]]], 422);
+            }
             return back()->withErrors(['buku_id' => $e->getMessage()])->withInput();
+        }
+
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'Peminjaman berhasil ditambahkan.', 'data' => $peminjaman]);
         }
 
         return redirect()->route('admin.peminjaman.index')
@@ -68,9 +78,17 @@ class PeminjamanController extends Controller
     public function update(UpdatePeminjamanRequest $request, Peminjaman $peminjaman)
     {
         try {
-            $this->service->ubah($peminjaman, $request->validated());
+            $peminjaman = $this->service->ubah($peminjaman, $request->validated());
+            $peminjaman->load(['user', 'buku']);
         } catch (\Exception $e) {
+            if ($request->expectsJson()) {
+                return response()->json(['errors' => ['buku_id' => [$e->getMessage()]]], 422);
+            }
             return back()->withErrors(['buku_id' => $e->getMessage()])->withInput();
+        }
+
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'Peminjaman berhasil diperbarui.', 'data' => $peminjaman]);
         }
 
         return redirect()->route('admin.peminjaman.index')
@@ -80,6 +98,10 @@ class PeminjamanController extends Controller
     public function destroy(Peminjaman $peminjaman)
     {
         $peminjaman->delete();
+
+        if (request()->expectsJson()) {
+            return response()->json(['message' => 'Peminjaman berhasil dihapus.']);
+        }
 
         return redirect()->route('admin.peminjaman.index')
             ->with('success', 'Data peminjaman berhasil dihapus.');
