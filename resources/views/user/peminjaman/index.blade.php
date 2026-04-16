@@ -48,14 +48,9 @@
 <div class="riwayat-page">
   <div class="container" style="max-width: 720px;">
 
-    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-1">
-      <div>
-        <div class="page-label">Akun Saya</div>
-        <div class="page-title">Riwayat Peminjaman</div>
-      </div>
-      <a href="{{ route('user.peminjaman.create') }}" class="btn-pinjam-baru mt-2">
-        + &nbsp;Pinjam Buku Baru
-      </a>
+    <div class="mb-1">
+      <div class="page-label">Akun Saya</div>
+      <div class="page-title">Riwayat Peminjaman</div>
     </div>
     <div class="page-divider"></div>
 
@@ -67,19 +62,41 @@
       <div class="pinjam-card">
         <div class="pinjam-card-body">
 
-          <img class="book-cover-sm"
-               src="{{ $p->buku->gambar ? asset('storage/'.$p->buku->gambar) : 'https://via.placeholder.com/48x64/EDE0BE/9A8860?text=📖' }}"
-               alt="{{ $p->buku->judul }}">
+          {{-- Tampilkan semua buku dari detail_peminjaman, fallback ke buku utama --}}
+          @php
+            $allBukus = $p->detailPeminjaman->isNotEmpty()
+              ? $p->detailPeminjaman->pluck('buku')
+              : collect([$p->buku]);
+          @endphp
+
+          <div style="display:flex;gap:6px;flex-shrink:0;">
+            @foreach($allBukus->take(3) as $b)
+            <img class="book-cover-sm"
+                 src="{{ $b->gambar ? asset('storage/'.$b->gambar) : 'https://via.placeholder.com/48x64/EDE0BE/9A8860?text=📖' }}"
+                 alt="{{ $b->judul }}"
+                 style="{{ !$loop->first ? 'margin-left:-20px;' : '' }}">
+            @endforeach
+            @if($allBukus->count() > 3)
+              <div class="book-cover-sm d-flex align-items-center justify-content-center"
+                   style="background:#EDE0BE;font-size:11px;font-weight:700;color:#3A2E1A;margin-left:-20px;">
+                +{{ $allBukus->count() - 3 }}
+              </div>
+            @endif
+          </div>
 
           <div class="pinjam-info">
-            <div class="pinjam-judul">{{ $p->buku->judul }}</div>
+            @if($allBukus->count() === 1)
+              <div class="pinjam-judul">{{ $allBukus->first()->judul }}</div>
+            @else
+              <div class="pinjam-judul">{{ $allBukus->count() }} Buku</div>
+              <div class="pinjam-meta" style="margin-top:2px;">
+                {{ $allBukus->pluck('judul')->take(2)->implode(', ') }}{{ $allBukus->count() > 2 ? '...' : '' }}
+              </div>
+            @endif
             <div class="pinjam-meta">
               Diminta: {{ $p->tanggal_request->format('d M Y') }}
               @if ($p->tanggal_pinjam)
                 &nbsp;·&nbsp; Dipinjam: {{ $p->tanggal_pinjam->format('d M Y') }}
-              @endif
-              @if ($p->tanggal_kembali)
-                &nbsp;·&nbsp; Dikembalikan: {{ $p->tanggal_kembali->format('d M Y') }}
               @endif
             </div>
             <div class="mt-2">
@@ -101,7 +118,7 @@
       <div class="empty-state">
         <div class="icon">📚</div>
         <p>Kamu belum pernah meminjam buku.</p>
-        <a href="{{ route('user.peminjaman.create') }}" class="btn-pinjam-baru">Pinjam Sekarang</a>
+        <a href="{{ route('daftarbuku') }}" class="btn-pinjam-baru">Jelajahi Buku</a>
       </div>
     @endforelse
 

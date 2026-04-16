@@ -175,8 +175,15 @@
       {{-- Tombol Pinjam --}}
       @auth
         @if ($buku->stok > 0)
-          <a class="btn-pinjam" href="{{ route('user.peminjaman.create', ['buku_id' => $buku->id]) }}">
-            📖 &nbsp;Pinjam Buku
+          <form action="{{ route('cart.add', $buku) }}" method="POST">
+            @csrf
+            <button type="submit" class="btn-pinjam">
+              🛒 &nbsp;Tambah ke Keranjang
+            </button>
+          </form>
+          <a href="{{ route('cart.index') }}" class="btn-pinjam"
+             style="display:block;margin-top:10px;background:#F0E6C8;color:#3A2E1A;border:1px solid #D4C490;font-size:13px;padding:11px;">
+            Lihat Keranjang
           </a>
         @else
           <button class="btn-pinjam" disabled style="opacity:0.5;cursor:not-allowed;">

@@ -19,7 +19,7 @@ class PeminjamanUserController extends Controller
     /** Daftar peminjaman milik user yang login */
     public function index()
     {
-        $peminjaman = Peminjaman::with(['buku', 'denda'])
+        $peminjaman = Peminjaman::with(['buku', 'denda', 'detailPeminjaman.buku'])
             ->where('user_id', Auth::id())
             ->latest()
             ->paginate(10);

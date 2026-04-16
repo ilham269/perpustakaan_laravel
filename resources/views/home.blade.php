@@ -304,7 +304,7 @@
       <div style="max-width: 420px;">
         <h1 class="hero-title">Halo, Selamat Datang<br>{{ Auth::user()->name }} 👋</h1>
         <p class="hero-sub">Selamat datang di Perpustakaan. Temukan buku favoritmu dan pinjam dengan mudah.</p>
-        <a href="{{ route('user.peminjaman.create') }}" class="btn-hero">Pinjam Buku</a>
+        <a href="{{ route('cart.index') }}" class="btn-hero">🛒 Keranjang Pinjam</a>
         <a href="{{ route('daftarbuku') }}" class="btn-hero-outline">Jelajahi Koleksi</a>
       </div>
 
@@ -434,7 +434,10 @@
             <div class="book-card-footer">
               <a href="{{ route('detailbuku.show', $item->id) }}" class="btn-detail-sm">Detail</a>
               @if ($item->stok > 0)
-                <a href="{{ route('user.peminjaman.create', ['buku_id' => $item->id]) }}" class="btn-pinjam-sm">Pinjam</a>
+                <form action="{{ route('cart.add', $item) }}" method="POST" style="flex:1">
+                  @csrf
+                  <button type="submit" class="btn-pinjam-sm w-100">pilih</button>
+                </form>
               @else
                 <span class="btn-pinjam-sm disabled">Habis</span>
               @endif

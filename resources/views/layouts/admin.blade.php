@@ -95,6 +95,20 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);-webk
   .hamburger{display:flex}
   .topbar-sep,.topbar-crumb{display:none}
 }
+
+/* Pagination */
+.pagination{display:flex;flex-wrap:wrap;gap:4px;margin:0;padding:0;list-style:none}
+.pagination .page-item .page-link{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:34px;height:34px;padding:0 10px;
+  border-radius:8px!important;border:1px solid var(--border);
+  background:var(--surface);color:var(--text2);
+  font-size:13px;font-weight:500;text-decoration:none;
+  transition:all .15s;line-height:1;
+}
+.pagination .page-item .page-link:hover{background:var(--bg);border-color:#cbd5e1;color:var(--text)}
+.pagination .page-item.active .page-link{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.pagination .page-item.disabled .page-link{opacity:.4;pointer-events:none;cursor:default}
 </style>
 @stack('styles')
 </head>

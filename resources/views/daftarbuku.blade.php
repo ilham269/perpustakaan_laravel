@@ -57,11 +57,22 @@
                         </p>
                     </div>
 
-                    <div class="card-footer bg-white border-0">
-                        <a href="{{ route('detailbuku.show', $buku->id) }}" class="btn w-100"
+                    <div class="card-footer bg-white border-0 d-flex gap-2">
+                        <a href="{{ route('detailbuku.show', $buku->id) }}" class="btn flex-fill"
                            style="background:#5c3d2e; color:white;">
                             Detail
                         </a>
+                        @auth
+                        @if($buku->stok > 0)
+                        <form action="{{ route('cart.add', $buku) }}" method="POST" class="flex-fill">
+                            @csrf
+                            <button type="submit" class="btn w-100"
+                                    style="background:#F0E6C8;color:#3A2E1A;border:1px solid #D4C490;">
+                                🛒
+                            </button>
+                        </form>
+                        @endif
+                        @endauth
                     </div>
 
                 </div>

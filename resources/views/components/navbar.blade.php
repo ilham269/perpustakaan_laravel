@@ -75,7 +75,22 @@
         @auth
           @if(auth()->user()->role !== 'admin')
           <li class="nav-item">
-            <a class="nav-link ..." href="{{ route('user.peminjaman.index') }}">Pinjaman Saya</a>
+            <a class="nav-link {{ request()->routeIs('user.peminjaman.*') ? 'active' : '' }}"
+               href="{{ route('user.peminjaman.index') }}">Pinjaman Saya</a>
+          </li>
+
+          {{-- Cart icon dengan badge --}}
+          <li class="nav-item">
+            @php $cartCount = count(session('cart', [])) @endphp
+            <a class="nav-link position-relative {{ request()->routeIs('cart.*','checkout.*') ? 'active' : '' }}"
+               href="{{ route('cart.index') }}" title="Keranjang">
+              Keranjanng saya 
+              @if($cartCount > 0)
+                <span style="position:absolute;top:0;right:0;background:#3A2E1A;color:#F5EDD6;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                  {{ $cartCount }}
+                </span>
+              @endif
+            </a>
           </li>
           @endif
 

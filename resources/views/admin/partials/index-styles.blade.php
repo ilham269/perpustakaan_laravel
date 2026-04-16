@@ -133,6 +133,7 @@
     padding: 14px 16px;
     border-top: 1px solid #f1f5f9;
 }
+.idx-pagination .pagination { margin: 0; }
 
 /* ── Flash ── */
 .idx-alert {
